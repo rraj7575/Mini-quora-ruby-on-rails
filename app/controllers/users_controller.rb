@@ -20,6 +20,7 @@ class UsersController < ApplicationController
   end
 
   def all_answers_of_a_user
+    
     user = User.find_by_id(params[:id])
     all_answers_by_users = Question.includes(:answers).where('user_id = ?',user.id)
   end
