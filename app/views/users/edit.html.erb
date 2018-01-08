@@ -1,0 +1,18 @@
+<div class="container">
+  <%= form_for @active_user , url: user_path(current_user), html: { multipart: true }, method: :put do |f| %>
+      <p>
+        <!--<%#= image_tag(@active_user.avatar_url) if @active_user.avatar? %>-->
+        <!--<%#= f.file_field :avatar %>-->
+        <!--<%#= f.hidden_field :avatar_cache %>-->
+      </p>
+      <%= f.label :first_name, 'First Name' %>
+      <%= f.text_field :first_name %></br>
+      <%= f.label :last_name, 'Last Name' %>
+      <%= f.text_field :last_name %></br>
+      <%= f.label :email, 'Email Id' %>
+      <%= f.text_field :email %></br>
+      <%= f.label :phone, 'Phone No' %>
+      <%= f.text_field :phone %></br>
+      <%= f.submit %>
+  <% end %>
+</div>

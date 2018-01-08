@@ -1,0 +1,6 @@
+<div class="container">
+  <%= form_for @question, url: question_path(@question), method: :put do |f| %>
+      <%= f.text_area :name %></br>
+      <%= f.submit %>
+  <% end %>
+</div>

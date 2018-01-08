@@ -1,0 +1,7 @@
+<% data.each do |comment| %>
+    <div>
+     <span><%= comment.first_name %></span>
+     <span><%= comment.last_name %></span>
+    </div>
+    <div><%= comment.commented_text %></div>
+<% end %>
