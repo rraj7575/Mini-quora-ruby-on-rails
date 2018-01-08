@@ -1,0 +1,168 @@
+<div class="QuestionMain">
+  <div>
+    <h2>
+      <span><%= @question.name %></span>
+    </h2>
+    <input type="submit" value="Answer" class="submit-answer  btn-primary">
+  </div>
+  <div class=" answer-a_question", style="display: none">
+    <%= form_for Answer.new , url: question_answers_url(@question) do |f| %>
+        <%= f.text_area :content , placeholder: 'Write your answer....' %></br>
+        <p><%= f.submit 'submit', :class => 'btn-primary' %></p>
+    <% end %>
+  </div>
+
+    <div class="answer-count"><%= (@all_answers.length.to_s  + ' Answers') %></div>
+
+  <% @all_answers.each do |answer| %>
+    <p><%= "user         " + @all_answered_users[answer.user_id].first_name + ' ' + @all_answered_users[answer.user_id].last_name %></p>
+    <p><%= answer.content %></p>
+    <div class="upvote-count">
+      <span id="upvoted_users_of_ans-<%= answer.id%>" > <%= link_to ((answer.upvate).to_s + ' ' + 'upvotes') %> </span>
+    </div>
+    <div>
+      <span id="upvote-<%=answer.id %>" class="upvote-btn">
+        <span >Upvote</span>
+        <span>|</span>
+        <span class="upvote-<%=answer.id %>"> <%= answer.upvate  %></span>
+      </span>
+      <span id="downvote-<%=answer.id %>" class="downvoted-btn">
+        <span >Downvote</span>
+        <span>|</span>
+        <span class="downvote-<%=answer.id %>"><%= answer.downvote %></span>
+      </span>
+    </div>
+    <div id="upvoted_answer_users-<%= answer.id %>">
+
+    </div>
+    <div id="comment_box_and_comment_button-<%= answer.id%>" class="comment-box-btn-togather">
+      <input type="text"  id="comment-answer-<%=answer.id%>" placeholder="Add a comment...." class="add-comment">
+      <input type="submit" value="Comment" id="submit-comment-<%= answer.id%>" style="display: none" class="btn-primary">
+    </div>
+    <% if (answer.comments.count > 0) %>
+        <div id="load_comment_of_answer-<%= answer.id %>" class="all-comments">
+          <%= render 'comments/load_comments', last_comment: answer.comments.last, answer_id: answer.id %>
+        </div>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  $(document).on('click', '.submit-answer', function(){
+      $('.answer-a_question').show()
+      $('.submit-answer').hide()
+
+  })
+
+  $('[id*="upvote-"]').click(function(){
+      var answer_id = (this.id).substring('upvote-'.length)
+      $.ajax({
+          url: '/upvote_answer',
+          type: 'post',
+          datatype: 'json',
+          data: {	"answer_id": answer_id},
+          success: function(response){
+              if (response['status'] === 1){
+                  var upvote_count_class_name = "upvote-" + answer_id
+                  var value_for_upvote_count = document.getElementsByClassName(upvote_count_class_name)[0].innerHTML
+                  document.getElementsByClassName(upvote_count_class_name)[0].innerHTML = "" + (parseInt(value_for_upvote_count)+1)
+              }
+          }
+      }).error(function(){
+          alert("something went wrong")
+      })
+  });
+
+  $('[id*="downvote-"]').click(function(){
+      var answer_id = (this.id).substring('downvote-'.length)
+      $.ajax({
+          url: '/downvote_answer',
+          type: 'post',
+          datatype: 'json',
+          data: {	"answer_id": answer_id},
+          success: function(response){
+              if (response['status'] === 1){
+                  var upvote_count_class_name = "downvote-" + answer_id
+                  var value_for_upvote_count = document.getElementsByClassName(upvote_count_class_name)[0].innerHTML
+                  document.getElementsByClassName(upvote_count_class_name)[0].innerHTML = "" + (parseInt(value_for_upvote_count)+1)
+              }
+          }
+      }).error(function(){
+          alert("something went wrong")
+      })
+  })
+
+
+  $('[id*="submit-comment-"]').click(function(){
+      var answer_id = (this.id).substring('submit-comment-'.length)
+      var  comment_id = 'comment-answer-' + answer_id
+      var commented_text = document.getElementById(comment_id).value
+      if(commented_text != ''){
+          $.ajax({
+              url: '/new_comment',
+              type: 'post',
+              datatype: 'json',
+              data: {	"answer_id": answer_id, commented_text: commented_text},
+              success: function(response){
+                  if(response.status === 1){
+                      debugger
+                      var new_div = $('<div></div>')
+                      new_div.append(commented_text)
+                      var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
+                      $('#' + comment_box_and_comment_button).after(new_div)
+                      $('#' + comment_id).val('')
+                  }
+              }
+          }).error(function(){
+              alert("Invalid response")
+          })
+      }
+  })
+
+  $('[id*="comment-answer-"]').click(function(){
+      var answer_id = (this.id).substring('comment-answer-'.length)
+      var  comment_id = 'comment-answer-' + answer_id
+      var submit_comment_btn_id = 'submit-comment-' + answer_id
+      $('#' + submit_comment_btn_id).show()
+  })
+
+
+  $('[id*="comment_id."]').click(function(e){
+      e.preventDefault()
+      var answer_id = (this.id).substring('comment_id.'.length)
+      $.ajax({
+          url: '/show_comments_of_a_answer',
+          type: 'post',
+          datatype: 'json',
+          data: {	"answer_id": answer_id},
+          success: function(response){
+              if (response['status'] === true){
+                  var load_all_comment = 'load_all_comments-' + answer_id
+                  $('#' + load_all_comment).html(response.all_comments_of_answer_partial_view);
+              }
+          }
+      }).error(function(){
+          alert("something went wrong")
+      })
+  })
+
+  $('[id*="upvoted_users_of_ans-"]').click(function(e){
+      e.preventDefault()
+      var answer_id = (this.id).substring('upvoted_users_of_ans-'.length)
+      $.ajax({
+          url: '/show_upvoted_users',
+          type: 'post',
+          datatype: 'json',
+          data: {	"answer_id": answer_id},
+          success: function(response){
+              if (response['status'] === true){
+                  var upvoted_answer_users_id = 'upvoted_answer_users-' + answer_id
+                  $('#' + upvoted_answer_users_id).html(response.new_view_partial);
+              }
+          }
+      }).error(function(){
+          alert("something went wrong")
+      })
+  })
+
+</script>

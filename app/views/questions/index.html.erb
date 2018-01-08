@@ -1,0 +1,19 @@
+<div class="content-wraper">
+  <% @all_questions.each do |question| %>
+      <div class="question_answer">
+        <div><%= link_to 'x' %></div>
+       <div class="question"><%= link_to question.name, question_answers_path(question), :class => 'question_link' %></div>
+        <% unless @first_answer_of_all_questions[question.id].nil? %>
+          <%= render 'common/user_details', user: @user_of_first_answer[question.id] %>
+          <%= render 'common/answer_details', answer: @first_answer_of_all_questions[question.id] %>
+        <% end %>
+      </div>
+      <div class="question_answer_edit_delete">
+        <%= link_to 'edit' ,edit_question_path(question) %>
+        <%= link_to 'Delete', question, :method => :delete, :confirm => "Are you sure ?" %>
+      </div>
+
+  <% end %>
+      <%= link_to 'ask question', new_question_path %>
+</div>
+
