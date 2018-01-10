@@ -20,8 +20,12 @@ class UsersController < ApplicationController
   end
 
   def all_answers_of_a_user
-    user = User.find_by_id(params[:id])
-    all_answers_by_users = Question.includes(:answers).where('user_id = ?',user.id)
+     @user = User.find_by_id(params[:id])
+    # all_answers_by_users = Question.includes(:answers).where('user_id = ?',user.id)
+    @all_answers_by_user_with_questions = ActiveRecord::Base.connection.execute("SELECT questions.id as question_id, questions.name as question_name,
+                                                     answers.content as answer_content, answers.upvate as upvote_count, answers.downvote, answers.id as answer_id
+                                                     FROM questions INNER JOIN answers WHERE answers.user_id=\'#{params[:id]}\'")
+
   end
 
   private

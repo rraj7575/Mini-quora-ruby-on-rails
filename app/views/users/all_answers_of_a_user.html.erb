@@ -1,0 +1,181 @@
+<div class="content-wraper">
+  <% @all_answers_by_user_with_questions.each do |question_answer| %>
+      <div class="question_answer">
+        <div><%= link_to 'x' %></div>
+        <div class="question"><%= link_to question_answer['question_name'], question_answers_path(question_answer['question_id']), :class => 'question_link' %></div>
+        <div><%= render 'common/user_details', user: @user %></div>
+        <div><%= question_answer['answer_content'] %></div>
+        <div class="upvote-count">
+          <span id="upvoted_users_of_ans-<%= question_answer['answer_id']%>" > <%= link_to ((question_answer['upvote_count']).to_s + ' ' + 'upvotes') %> </span>
+        </div>
+        <div>
+          <span id="upvote-<%= question_answer['answer_id'] %>" class="upvote-btn">
+            <span >Upvote</span>
+            <span>|</span>
+            <span class="upvote-<%= question_answer['answer_id']%>"> <%= question_answer['upvote_count']  %></span>
+          </span>
+          <span id="downvote-<%= question_answer['answer_id'] %>" class="downvoted-btn">
+            <span >Downvote</span>
+            <span>|</span>
+            <span class="downvote-<%= question_answer['answer_id'] %>"><%= question_answer['upvote_count'] %></span>
+          </span>
+        </div>
+
+        <div id="upvoted_count_position_fixed-<%= question_answer['answer_id'] %>" style="display: none" class="upvoted_count_position_fixed" > <%= question_answer['answer_id'] %>  Upvoters </div>
+        <div id="upvoted_user_modal_wrapper-<%= question_answer['answer_id'] %>" class="upvoted_user_modal_wrapper" style="display: none">
+          <div id="upvoted_answer_users-<%= question_answer['answer_id']%>" class="answer_voter_list">
+          </div>
+        </div>
+
+        <div id="comment_box_and_comment_button-<%= question_answer['answer_id'] %>" class="comment-box-btn-togather" style="display: none">
+          <input type="text"  id="comment-answer-<%= question_answer['answer_id'] %>" placeholder="Add a comment...." class="add-comment">
+          <input type="submit" value="Comment" id="submit-comment-<%= question_answer['answer_id'] %>" style="display: none" class="btn-primary">
+        </div>
+       <div  style="display: none"> <%= answer = Answer.find_by_id(question_answer['answer_id']) %></div>
+        <% if (answer.comments.count > 0) %>
+            <div id="load_comment_of_answer-<%= answer.id %>" class="all-comments">
+              <%= render 'comments/load_comments', last_comment: answer.comments.last,user_of_last_comment: User.find_by_id(answer.comments.last.user_id), answer_id: answer.id %>
+            </div>
+        <% end %>
+
+      </div>
+
+      <div class="question_answer_edit_delete">
+        <%= link_to 'edit' ,edit_question_path(question_answer['question_id']) %>
+        <%= link_to 'Delete', question_answer['question_name'], :method => :delete, :confirm => "Are you sure ?" %>
+      </div>
+  <% end %>
+  <%= link_to 'ask question', new_question_path %>
+</div>
+
+
+<script>
+    $(document).on('click', '.submit-answer', function(){
+        $('.answer-a_question').show()
+        $('.submit-answer').hide()
+
+    })
+
+    $('[id*="upvote-"]').click(function(){
+        var answer_id = (this.id).substring('upvote-'.length)
+        $.ajax({
+            url: '/upvote_answer',
+            type: 'post',
+            datatype: 'json',
+            data: {	"answer_id": answer_id},
+            success: function(response){
+                if (response['status'] === 1){
+                    var upvote_count_class_name = "upvote-" + answer_id
+                    var value_for_upvote_count = document.getElementsByClassName(upvote_count_class_name)[0].innerHTML
+                    document.getElementsByClassName(upvote_count_class_name)[0].innerHTML = "" + (parseInt(value_for_upvote_count)+1)
+                }
+            }
+        }).error(function(){
+            alert("something went wrong")
+        })
+    });
+
+    $('[id*="downvote-"]').click(function(){
+        var answer_id = (this.id).substring('downvote-'.length)
+        $.ajax({
+            url: '/downvote_answer',
+            type: 'post',
+            datatype: 'json',
+            data: {	"answer_id": answer_id},
+            success: function(response){
+                if (response['status'] === 1){
+                    var upvote_count_class_name = "downvote-" + answer_id
+                    var value_for_upvote_count = document.getElementsByClassName(upvote_count_class_name)[0].innerHTML
+                    document.getElementsByClassName(upvote_count_class_name)[0].innerHTML = "" + (parseInt(value_for_upvote_count)+1)
+                }
+            }
+        }).error(function(){
+            alert("something went wrong")
+        })
+    })
+
+
+    $('[id*="submit-comment-"]').click(function(){
+        var answer_id = (this.id).substring('submit-comment-'.length)
+        var  comment_id = 'comment-answer-' + answer_id
+        var commented_text = document.getElementById(comment_id).value
+        if(commented_text != ''){
+            $.ajax({
+                url: '/new_comment',
+                type: 'post',
+                datatype: 'json',
+                data: {	"answer_id": answer_id, commented_text: commented_text},
+                success: function(response){
+                    if(response.status === 1){
+                        var new_div = $('<div class="your_recent_comments"></div>')
+                        new_div.append(commented_text)
+                        var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
+                        $('#' + comment_box_and_comment_button).after(new_div)
+                        $('#' + comment_id).val('')
+                    }
+                }
+            }).error(function(){
+                alert("Invalid response")
+            })
+        }
+    })
+
+    $('[id*="comment-answer-"]').click(function(){
+        var answer_id = (this.id).substring('comment-answer-'.length)
+        var  comment_id = 'comment-answer-' + answer_id
+        var submit_comment_btn_id = 'submit-comment-' + answer_id
+        $('#' + submit_comment_btn_id).show()
+    })
+
+
+    $('[id*="comment_id-"]').click(function(e){
+        e.preventDefault()
+        var answer_id = (this.id).substring('comment_id-'.length)
+        var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
+        $('#' + comment_box_and_comment_button).show()
+        var last_comment_id = 'comment_id-' + answer_id
+        $('#' + last_comment_id).hide()
+        $.ajax({
+            url: '/show_comments_of_a_answer',
+            type: 'post',
+            datatype: 'json',
+            data: {	"answer_id": answer_id},
+            success: function(response){
+                if (response['status'] === true){
+                    var load_all_comment = 'load_all_comments-' + answer_id
+                    $('#' + load_all_comment).html(response.all_comments_of_answer_partial_view);
+                    $('#' + load_all_comment).show()
+
+                }
+            }
+        }).error(function(){
+            alert("something went wrong")
+        })
+    })
+
+    $('[id*="upvoted_users_of_ans-"]').click(function(e){
+        e.preventDefault()
+        var answer_id = (this.id).substring('upvoted_users_of_ans-'.length)
+        $.ajax({
+            url: '/show_upvoted_users',
+            type: 'post',
+            datatype: 'json',
+            data: {	"answer_id": answer_id},
+            success: function(response){
+                if (response['status'] === true){
+                    var upvoted_answer_users_id = 'upvoted_answer_users-' + answer_id
+                    var upvoted_user_modal_wrapper = 'upvoted_user_modal_wrapper-' + answer_id
+                    var upvoted_count_position_fixed = 'upvoted_count_position_fixed-' + answer_id
+                    $('#' + upvoted_count_position_fixed).attr('style', 'width: 582px !important');
+                    $('#'+ upvoted_user_modal_wrapper).attr('style', 'width: 582px !important');
+                    $('#' + upvoted_count_position_fixed).show()
+                    $('#'+ upvoted_user_modal_wrapper).show()
+                    $('#' + upvoted_answer_users_id).html(response.new_view_partial);
+                }
+            }
+        }).error(function(){
+            alert("something went wrong")
+        })
+    })
+
+</script>

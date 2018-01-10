@@ -1,7 +1,6 @@
 <% data.each do |comment| %>
-    <div>
-     <span><%= comment.first_name %></span>
-     <span><%= comment.last_name %></span>
+    <div class="comments">
+     <div> <%= link_to (comment.first_name + '  ' + comment.last_name), all_answers_of_a_user_path(id: comment.user_id) %></div>
+      <div><%= comment.commented_text %></div>
     </div>
-    <div><%= comment.commented_text %></div>
 <% end %>

@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
   def show_comments_of_a_answer
     answer_id = params[:answer_id]
     comment_users_data = User.joins(:comments).where('comments.answer_id = ? ', answer_id).select('comments.commented_text,
-                                                                                       users.first_name, users.last_name')
+                                                                                       users.first_name, users.last_name, users.id as user_id')
     render json: { status: true, all_comments_of_answer_partial_view: render_to_string('_user_and_comment.html',locals: {data: comment_users_data}, layout:false)}
   end
 

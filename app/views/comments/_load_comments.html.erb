@@ -1,3 +1,10 @@
-<div id = comment_id.<%= answer_id %> ><%= 'comment: -----------' + last_comment.commented_text %> </div>
-  <div id="load_all_comments-<%= answer_id %>">
+<div  id="comment_id-<%= answer_id %>" class="last_comment_of_a_answer" >
+  <div>
+    <%= user_of_last_comment.first_name + user_of_last_comment.last_name  %>
+    <div><%= 'comment: -----------' + last_comment.commented_text %> </div>
+  </div>
 </div>
+<div class="all_comments_of_a_answer" id="load_all_comments-<%= answer_id %>" style="display: none"></div>
+
+
+

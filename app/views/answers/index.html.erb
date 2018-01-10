@@ -15,7 +15,7 @@
     <div class="answer-count"><%= (@all_answers.length.to_s  + ' Answers') %></div>
 
   <% @all_answers.each do |answer| %>
-    <p><%= "user         " + @all_answered_users[answer.user_id].first_name + ' ' + @all_answered_users[answer.user_id].last_name %></p>
+     <div> <%= link_to ( @all_answered_users[answer.user_id].first_name + '  ' + @all_answered_users[answer.user_id].last_name), all_answers_of_a_user_path(id: answer.user_id) %> </div>
     <p><%= answer.content %></p>
     <div class="upvote-count">
       <span id="upvoted_users_of_ans-<%= answer.id%>" > <%= link_to ((answer.upvate).to_s + ' ' + 'upvotes') %> </span>
@@ -32,16 +32,18 @@
         <span class="downvote-<%=answer.id %>"><%= answer.downvote %></span>
       </span>
     </div>
-    <div id="upvoted_answer_users-<%= answer.id %>">
-
+    <div id="upvoted_count_position_fixed-<%= answer.id %>" style="display: none" class="upvoted_count_position_fixed" > <%= answer.upvate %>  Upvoters </div>
+    <div id="upvoted_user_modal_wrapper-<%= answer.id %>" class="upvoted_user_modal_wrapper" style="display: none">
+      <div id="upvoted_answer_users-<%= answer.id %>" class="answer_voter_list">
+      </div>
     </div>
-    <div id="comment_box_and_comment_button-<%= answer.id%>" class="comment-box-btn-togather">
-      <input type="text"  id="comment-answer-<%=answer.id%>" placeholder="Add a comment...." class="add-comment">
+    <div id="comment_box_and_comment_button-<%= answer.id %>" class="comment-box-btn-togather" style="display: none">
+      <input type="text"  id="comment-answer-<%= answer.id %>" placeholder="Add a comment...." class="add-comment">
       <input type="submit" value="Comment" id="submit-comment-<%= answer.id%>" style="display: none" class="btn-primary">
     </div>
     <% if (answer.comments.count > 0) %>
         <div id="load_comment_of_answer-<%= answer.id %>" class="all-comments">
-          <%= render 'comments/load_comments', last_comment: answer.comments.last, answer_id: answer.id %>
+          <%= render 'comments/load_comments', last_comment: answer.comments.last,user_of_last_comment: @all_answered_users[answer.user_id], answer_id: answer.id %>
         </div>
     <% end %>
   <% end %>
@@ -105,8 +107,7 @@
               data: {	"answer_id": answer_id, commented_text: commented_text},
               success: function(response){
                   if(response.status === 1){
-                      debugger
-                      var new_div = $('<div></div>')
+                      var new_div = $('<div class="your_recent_comments"></div>')
                       new_div.append(commented_text)
                       var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
                       $('#' + comment_box_and_comment_button).after(new_div)
@@ -127,9 +128,13 @@
   })
 
 
-  $('[id*="comment_id."]').click(function(e){
+  $('[id*="comment_id-"]').click(function(e){
       e.preventDefault()
-      var answer_id = (this.id).substring('comment_id.'.length)
+      var answer_id = (this.id).substring('comment_id-'.length)
+      var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
+      $('#' + comment_box_and_comment_button).show()
+      var last_comment_id = 'comment_id-' + answer_id
+      $('#' + last_comment_id).hide()
       $.ajax({
           url: '/show_comments_of_a_answer',
           type: 'post',
@@ -139,6 +144,8 @@
               if (response['status'] === true){
                   var load_all_comment = 'load_all_comments-' + answer_id
                   $('#' + load_all_comment).html(response.all_comments_of_answer_partial_view);
+                  $('#' + load_all_comment).show()
+
               }
           }
       }).error(function(){
@@ -157,6 +164,10 @@
           success: function(response){
               if (response['status'] === true){
                   var upvoted_answer_users_id = 'upvoted_answer_users-' + answer_id
+                  var upvoted_user_modal_wrapper = 'upvoted_user_modal_wrapper-' + answer_id
+                  var upvoted_count_position_fixed = 'upvoted_count_position_fixed-' + answer_id
+                  $('#' + upvoted_count_position_fixed).show()
+                  $('#'+ upvoted_user_modal_wrapper).show()
                   $('#' + upvoted_answer_users_id).html(response.new_view_partial);
               }
           }

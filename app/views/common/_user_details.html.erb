@@ -1,4 +1,1 @@
-<div>
-    <%= user.first_name %>
-    <%= user.last_name %>
-</div>
+<%= link_to (user.first_name + '  ' + user.last_name), all_answers_of_a_user_path(id:user.id) %>
