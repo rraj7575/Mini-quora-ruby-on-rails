@@ -1,0 +1,5 @@
+<% if @active_user.avatar? %>
+    <%= image_tag(@active_user.avatar_url) %>
+<% else %>
+    <%= image_tag('profile.png')  %>
+<% end %>
