@@ -1,18 +1,39 @@
 <div class="container">
-  <%= form_for @active_user , url: user_path(current_user), html: { multipart: true }, method: :put do |f| %>
-      <p>
-        <!--<%#= image_tag(@active_user.avatar_url) if @active_user.avatar? %>-->
-        <!--<%#= f.file_field :avatar %>-->
-        <!--<%#= f.hidden_field :avatar_cache %>-->
-      </p>
-      <%= f.label :first_name, 'First Name' %>
-      <%= f.text_field :first_name %></br>
-      <%= f.label :last_name, 'Last Name' %>
-      <%= f.text_field :last_name %></br>
-      <%= f.label :email, 'Email Id' %>
-      <%= f.text_field :email %></br>
-      <%= f.label :phone, 'Phone No' %>
-      <%= f.text_field :phone %></br>
-      <%= f.submit %>
-  <% end %>
+    <%= form_for @active_user , url: user_path(current_user), html: { multipart: true }, method: :put do |f| %>
+        <%= render 'user_profile_pic_uploader', f: f %>
+        <div class="profile_wraper">
+          <div><%= f.label :name, 'Name' %></div>
+          <div><%= f.text_field :name %></br></div>
+          <div> <%= f.label :email, 'Email Id' %></div>
+          <%= f.text_field :email %></br>
+          <div><%= f.label :phone, 'Phone No' %></div>
+          <%= f.text_field :phone %></br>
+          <%= f.submit %>
+        </div>
+    <% end %>
 </div>
+
+<script>
+//  $('.choose_image').change(function(e){
+////      $('.choose_image').val()
+//      var data = new FormData(this)
+//      e.preventDefault();
+//      $.ajax({
+//          url: '/change_profile_picture',
+//          type: 'post',
+//          datatype: 'json',
+//          processData:false,
+//          cache: false,
+//          data: {	"image_data": data },
+//          success: function(response){
+//              if (response['status'] === 1){
+//                  var upvote_count_class_name = "downvote-" + answer_id
+//                  var value_for_upvote_count = document.getElementsByClassName(upvote_count_class_name)[0].innerHTML
+//                  document.getElementsByClassName(upvote_count_class_name)[0].innerHTML = "" + (parseInt(value_for_upvote_count)+1)
+//              }
+//          }
+//      }).error(function(){
+//          alert("something went wrong")
+//      })
+//  })
+</script>

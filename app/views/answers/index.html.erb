@@ -1,59 +1,79 @@
-<div class="QuestionMain">
-  <div>
-    <h2>
-      <span><%= @question.name %></span>
-    </h2>
-    <input type="submit" value="Answer" class="submit-answer  btn-primary">
-  </div>
-  <div class=" answer-a_question", style="display: none">
-    <%= form_for Answer.new , url: question_answers_url(@question) do |f| %>
-        <%= f.text_area :content , placeholder: 'Write your answer....' %></br>
-        <p><%= f.submit 'submit', :class => 'btn-primary' %></p>
-    <% end %>
-  </div>
-
-    <div class="answer-count"><%= (@all_answers.length.to_s  + ' Answers') %></div>
-
-  <% @all_answers.each do |answer| %>
-     <div> <%= link_to ( @all_answered_users[answer.user_id].first_name + '  ' + @all_answered_users[answer.user_id].last_name), all_answers_of_a_user_path(id: answer.user_id) %> </div>
-    <p><%= answer.content %></p>
-    <div class="upvote-count">
-      <span id="upvoted_users_of_ans-<%= answer.id%>" > <%= link_to ((answer.upvate).to_s + ' ' + 'upvotes') %> </span>
-    </div>
+<div class="question_wraper">
+  <div class="QuestionMain">
     <div>
-      <span id="upvote-<%=answer.id %>" class="upvote-btn">
-        <span >Upvote</span>
-        <span>|</span>
-        <span class="upvote-<%=answer.id %>"> <%= answer.upvate  %></span>
-      </span>
-      <span id="downvote-<%=answer.id %>" class="downvoted-btn">
-        <span >Downvote</span>
-        <span>|</span>
-        <span class="downvote-<%=answer.id %>"><%= answer.downvote %></span>
-      </span>
+      <h2>
+        <span><%= @question.name %></span>
+      </h2>
+      <input type="submit" value="Answer" class="submit-answer  btn-primary">
     </div>
-    <div id="upvoted_count_position_fixed-<%= answer.id %>" style="display: none" class="upvoted_count_position_fixed" > <%= answer.upvate %>  Upvoters </div>
-    <div id="upvoted_user_modal_wrapper-<%= answer.id %>" class="upvoted_user_modal_wrapper" style="display: none">
-      <div id="upvoted_answer_users-<%= answer.id %>" class="answer_voter_list">
-      </div>
+    <div class=" answer-a_question", style="display: none">
+      <%= form_for Answer.new , url: question_answers_url(@question) do |f| %>
+          <%= f.text_area :content , placeholder: 'Write your answer....' %></br>
+          <p><%= f.submit 'submit', :class => 'btn-primary' %></p>
+      <% end %>
     </div>
-    <div id="comment_box_and_comment_button-<%= answer.id %>" class="comment-box-btn-togather" style="display: none">
-      <input type="text"  id="comment-answer-<%= answer.id %>" placeholder="Add a comment...." class="add-comment">
-      <input type="submit" value="Comment" id="submit-comment-<%= answer.id%>" style="display: none" class="btn-primary">
-    </div>
-    <% if (answer.comments.count > 0) %>
-        <div id="load_comment_of_answer-<%= answer.id %>" class="all-comments">
-          <%= render 'comments/load_comments', last_comment: answer.comments.last,user_of_last_comment: @all_answered_users[answer.user_id], answer_id: answer.id %>
+      <div class="answer-count"><%= (@all_answers.length.to_s  + ' Answers') %></div>
+    <% @all_answers.each do |answer| %>
+      <div class="question_answer_user">
+        <div> <%= render 'common/user_details' , user: @all_answered_users[answer.user_id]%></div>
+        <div style="margin-top: 40px"><%= answer.content %></div>
+        <div class="upvote-count">
+          <span id="upvoted_users_of_ans-<%= answer.id%>" > <%= link_to ((answer.upvate).to_s + ' ' + 'upvotes') %> </span>
         </div>
+        <div>
+          <span id="upvote-<%=answer.id %>" class="upvote-btn">
+            <span >Upvote</span>
+            <span>|</span>
+            <span class="upvote-<%=answer.id %>"> <%= answer.upvate  %></span>
+          </span>
+          <span id="downvote-<%=answer.id %>" class="downvoted-btn">
+            <span >Downvote</span>
+            <span>|</span>
+            <span class="downvote-<%=answer.id %>"><%= answer.downvote %></span>
+          </span>
+        </div>
+        <div id="upvoted_count_position_fixed-<%= answer.id %>" style="display: none" class="upvoted_count_position_fixed" > <%= answer.upvate %>  Upvoters </div>
+        <div id="upvoted_user_modal_wrapper-<%= answer.id %>" class="upvoted_user_modal_wrapper" style="display: none">
+          <div id="upvoted_answer_users-<%= answer.id %>" class="answer_voter_list">
+          </div>
+        </div>
+        <div id="comment_box_and_comment_button-<%= answer.id %>" class="comment-box-btn-togather" style="display: none">
+          <div> <%= render 'users/user_profile_pic_small', user: current_user %></div>
+          <input type="text"  id="comment-answer-<%= answer.id %>" placeholder="Add a comment...." class="add-comment">
+          <input type="submit" value="Comment" id="submit-comment-<%= answer.id%>" style="display: none" class="btn-primary">
+        </div>
+        <% if (answer.comments.count > 0) %>
+            <div id="load_comment_of_answer-<%= answer.id %>" class="all-comments">
+              <%= render 'comments/load_comments', last_comment: answer.comments.last, user_of_last_comment: answer.comments.last.user, answer_id: answer.id %>
+            </div>
+        <% else %>
+          <script>
+            var comment_box_and_comment_button = 'comment_box_and_comment_button-' + '<%= answer.id%>'
+              $('#' + comment_box_and_comment_button).show()
+          </script>
+        <% end %>
+      </div>
     <% end %>
-  <% end %>
+  </div>
 </div>
-
 <script>
   $(document).on('click', '.submit-answer', function(){
       $('.answer-a_question').show()
       $('.submit-answer').hide()
 
+  })
+
+
+
+  $('[id*="edit_comment-"]').click(function(e){
+      e.preventDefault()
+      var comment_id = (this.id).substring('edit_comment-'.length)
+      var updated_comment = 'updated_comment-' + comment_id
+      $('#' + updated_comment).hide()
+      var three_dot_menu = 'three_dot_menu-' + comment_id
+      $('#' + three_dot_menu).hide()
+      var edit_box_and_update_button = 'edit_box_and_update_button-' + comment_id
+      $('#' + edit_box_and_update_button).show()
   })
 
   $('[id*="upvote-"]').click(function(){
@@ -106,12 +126,13 @@
               datatype: 'json',
               data: {	"answer_id": answer_id, commented_text: commented_text},
               success: function(response){
-                  if(response.status === 1){
-                      var new_div = $('<div class="your_recent_comments"></div>')
-                      new_div.append(commented_text)
+                  if(response.status === true){
+//                      var new_div = $('<div class="your_recent_comments"></div>')
+//                      new_div.append(response.recent_comment)
                       var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
-                      $('#' + comment_box_and_comment_button).after(new_div)
+                      $('#' + comment_box_and_comment_button).after(response.recent_comment)
                       $('#' + comment_id).val('')
+
                   }
               }
           }).error(function(){

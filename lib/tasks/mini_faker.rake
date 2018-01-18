@@ -2,7 +2,7 @@ require 'rubygems'
 require 'faker'
 namespace :faker do
   task :create_user => :environment do
-    1000.times do
+    100.times do
       user = User.new
       user.first_name = Faker::Name.name
       user.last_name = Faker::Name.name

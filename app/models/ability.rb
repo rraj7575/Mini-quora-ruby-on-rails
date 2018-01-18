@@ -11,5 +11,6 @@ class Ability
     can :create, Answer, user_id: user.id
     can :update, User, id: user.id
     can :all_answers_of_a_user, User
+    can :change_profile_picture, User
   end
 end

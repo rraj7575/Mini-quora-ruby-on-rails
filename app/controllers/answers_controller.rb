@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
   def index
     @question = Question.find_by(id: params[:question_id])
     @all_answers = @question.answers   #Answer.where(question_id: params['question_id'])
+    # @last_user_commented_on_a_answer = @all_answers.comments
     @all_answered_users = {}
     @all_answers.each do |answer|
       user_id = answer.user_id
@@ -19,8 +20,29 @@ class AnswersController < ApplicationController
     redirect_to question_answers_path
   end
 
-  def upvote_answer
+  def edit
+    begin
+      answer = Answer.find_by_id(params['answer_id'])
+      answer.content = params['updating_answer_text']
+      answer.save!
+      render json: {status: true}
+    rescue
+      render json: {status: false}
+    end
+  end
 
+  def destroy
+    begin
+      answer = Answer.find_by_id(params['answer_id'])
+      answer.comments.delete_all
+      answer.delete
+      render json: { status: true }
+    rescue
+      render json: { status: false}
+    end
+  end
+
+  def upvote_answer
     begin
       @answer = Answer.find_by_id(params['answer_id'])
       upvote_count = @answer.upvate
@@ -46,3 +68,13 @@ class AnswersController < ApplicationController
     end
   end
 end
+
+
+
+
+
+
+
+
+
+

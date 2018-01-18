@@ -1,10 +1,9 @@
 <div class="content-wraper">
   <% @all_answers_by_user_with_questions.each do |question_answer| %>
       <div class="question_answer">
-        <div><%= link_to 'x' %></div>
         <div class="question"><%= link_to question_answer['question_name'], question_answers_path(question_answer['question_id']), :class => 'question_link' %></div>
-        <div><%= render 'common/user_details', user: @user %></div>
-        <div><%= question_answer['answer_content'] %></div>
+          <div><%= render 'common/user_details', user: @user %></div>
+          <div class="answer_content" style="margin-top: 40px" ><%= question_answer['answer_content'] %></div>
         <div class="upvote-count">
           <span id="upvoted_users_of_ans-<%= question_answer['answer_id']%>" > <%= link_to ((question_answer['upvote_count']).to_s + ' ' + 'upvotes') %> </span>
         </div>
@@ -17,7 +16,7 @@
           <span id="downvote-<%= question_answer['answer_id'] %>" class="downvoted-btn">
             <span >Downvote</span>
             <span>|</span>
-            <span class="downvote-<%= question_answer['answer_id'] %>"><%= question_answer['upvote_count'] %></span>
+            <span class="downvote-<%= question_answer['answer_id'] %>"><%= question_answer['downvote_count'] %></span>
           </span>
         </div>
 
@@ -28,6 +27,7 @@
         </div>
 
         <div id="comment_box_and_comment_button-<%= question_answer['answer_id'] %>" class="comment-box-btn-togather" style="display: none">
+          <div> <%= render 'users/user_profile_pic_small' , user: current_user %></div>
           <input type="text"  id="comment-answer-<%= question_answer['answer_id'] %>" placeholder="Add a comment...." class="add-comment">
           <input type="submit" value="Comment" id="submit-comment-<%= question_answer['answer_id'] %>" style="display: none" class="btn-primary">
         </div>
@@ -39,13 +39,9 @@
         <% end %>
 
       </div>
-
-      <div class="question_answer_edit_delete">
-        <%= link_to 'edit' ,edit_question_path(question_answer['question_id']) %>
-        <%= link_to 'Delete', question_answer['question_name'], :method => :delete, :confirm => "Are you sure ?" %>
-      </div>
   <% end %>
-  <%= link_to 'ask question', new_question_path %>
+
+
 </div>
 
 
@@ -106,11 +102,11 @@
                 datatype: 'json',
                 data: {	"answer_id": answer_id, commented_text: commented_text},
                 success: function(response){
-                    if(response.status === 1){
-                        var new_div = $('<div class="your_recent_comments"></div>')
-                        new_div.append(commented_text)
+                    if(response.status === true){
+//                        var new_div = $('<div class="your_recent_comments"></div>')
+//                        new_div.append(commented_text)
                         var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
-                        $('#' + comment_box_and_comment_button).after(new_div)
+                        $('#' + comment_box_and_comment_button).after(response.recent_comment)
                         $('#' + comment_id).val('')
                     }
                 }

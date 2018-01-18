@@ -2,15 +2,15 @@ class QuestionsController < ApplicationController
 
   def index
     @all_questions = Question.all
-    @first_answer_of_all_questions = {}
-    @user_of_first_answer = {}
+    @last_answer_of_all_questions = {}
+    @user_of_last_answer = {}
     @all_questions.each do |question|
       all_answers_for_current_question = question.answers
       unless all_answers_for_current_question.empty?
-        first_answer = all_answers_for_current_question.first
-        @first_answer_of_all_questions[question.id] = first_answer
-        first_user = User.find_by_id(first_answer.user_id)
-        @user_of_first_answer[question.id] = first_user
+        last_answer = all_answers_for_current_question.last
+        @last_answer_of_all_questions[question.id] = last_answer
+        last_user = User.find_by_id(last_answer.user_id)
+        @user_of_last_answer[question.id] = last_user
       end
     end
   end
@@ -48,8 +48,14 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question = Question.find_by(params[:id])
-    @question.delete
+    begin
+      @question = Question.find_by(params[:id])
+      @question.answers.delete_all
+      @question.delete
+    rescue
+
+    end
+
     redirect_to questions_path
   end
 

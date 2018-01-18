@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
-  # has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
-  # validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
+  attr_accessor :avatar
+  # mount_uploader :avatar, AvatarUploader
   before_action :current_ability, only: [:edit, :update]
   load_and_authorize_resource
+  # skip_before_action :verify_authenticity_token
 
   def edit
     @active_user = current_user
@@ -11,11 +12,8 @@ class UsersController < ApplicationController
   def update
     @active_user = current_user
     @active_user.update!(permit_params)
-    # @active_user.avatar = params[:user][:avatar]
+    @active_user.avatar = params[:user][:avatar]
     @active_user.save!
-    # @active_user.avatar.url
-    # @active_user.avatar.current_path
-    # @active_user.avatar_identifier
     redirect_to questions_path
   end
 
@@ -23,9 +21,12 @@ class UsersController < ApplicationController
      @user = User.find_by_id(params[:id])
     # all_answers_by_users = Question.includes(:answers).where('user_id = ?',user.id)
     @all_answers_by_user_with_questions = ActiveRecord::Base.connection.execute("SELECT questions.id as question_id, questions.name as question_name,
-                                                     answers.content as answer_content, answers.upvate as upvote_count, answers.downvote, answers.id as answer_id
-                                                     FROM questions INNER JOIN answers WHERE answers.user_id=\'#{params[:id]}\'")
+                                                     answers.content as answer_content, answers.upvate as upvote_count, answers.downvote as downvote_count, answers.id as answer_id
+                                                     FROM questions INNER JOIN answers ON questions.id=answers.question_id WHERE answers.user_id=\'#{params[:id]}\'")
+  end
 
+  def change_profile_picture
+    render json: {status: true}
   end
 
   private
@@ -35,6 +36,6 @@ class UsersController < ApplicationController
   end
 
   def permit_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone)
+    params.require(:user).permit(:name, :email, :phone)
   end
 end
