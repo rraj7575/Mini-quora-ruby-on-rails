@@ -1,5 +1,5 @@
 <div class="show_profile profile_wraper">
-  <%= render 'user_profile_pic' %>
+  <%= render 'user_profile_pic' , user: @active_user %>
   <div class="profile_updater">
     <%= f.file_field :avatar , class: 'choose_image' %>
     <div class="edit_profile_photo ">

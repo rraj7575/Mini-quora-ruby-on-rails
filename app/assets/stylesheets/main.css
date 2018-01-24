@@ -2,9 +2,9 @@ body{
     padding-top: 100px;
     /*background: ghostwhite;*/
 }
-.content-wraper{
-    background: ghostwhite;
-}
+/*.content-wraper{*/
+    /*background: ghostwhite;*/
+/*}*/
 .sign-up, .sign-in, .forget-password{
     background-color: dimgray;
     text-align: center ;
@@ -117,11 +117,9 @@ body{
     background-color: #fff;
     border-radius: 4px;
     margin-left: 150px;
-    /*margin-top: 0px !important;*/
-    -webkit-transition: border-color .5s ease 180ms ease-in-out 0s;
-    -o-transition: border-color .5s ease 180ms ease-in-out 0s;
-    transition: border-color .5s ease 180ms ease-in-out 0s;
-    /*padding: 16px;*/
+    /*-webkit-transition: border-color .5s ease 180ms ease-in-out 0s;*/
+    /*-o-transition: border-color .5s ease 180ms ease-in-out 0s;*/
+    /*transition: border-color .5s ease 180ms ease-in-out 0s;*/
 }
 .upvote-count span a{
     height: 30px;
@@ -133,7 +131,7 @@ body{
 .upvote-count{
     margin-bottom: 10px !important;
 }
-.upvote-btn, .downvoted-btn{
+.upvote-btn, .downvoted-btn, .follow_btn{
     padding: 5px;
     border: 1px solid #ddd;
     margin-right: 8px;
@@ -144,6 +142,28 @@ body{
     background: #f1f8fb;
     cursor: pointer;
     border-radius: 4px;
+}
+.ur_followers{
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #ddd;
+    cursor: default;
+}
+.following_btn{
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #ddd;
+    cursor: pointer;
+
+}
+.following_btn:hover{
+    border: 1px solid dimgray;
 }
 .comment-box-btn-togather{
     display: block;
@@ -230,9 +250,6 @@ textarea:focus, input:focus{
     padding-top: 8px;
     padding-bottom: 8px;
     margin-top: 16px;
-    -webkit-transition: border-color .5s ease 180ms ease-in-out 0s;
-    -o-transition: border-color .5s ease 180ms ease-in-out 0s;
-    transition: border-color .5s ease 180ms ease-in-out 0s;
 }
 .three-dot-menu{
     float: right;
@@ -307,3 +324,72 @@ input[type='file'] {
     padding-top: 16px;
     border-bottom: 1px solid #ddd;
 }
+.user_profile div img {
+    width: 150px;
+    height: 150px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border-radius: 50%;
+}
+.user_profile {
+    /*float: left;*/
+    border-bottom: 1px solid #ddd;
+    margin-left: 150px;
+    width: 766px;
+}
+.user_profile_pic{
+    width: 300px;
+}
+.follow_or_unfollow{
+    width: 466px;
+}
+
+.user_count{
+    width: 600px;
+    border-bottom: 1px solid #ddd;
+    margin-left: 340px;
+    margin-bottom: 12px;
+    margin-top: 16px;
+    font-size: larger;
+    color: black;
+}
+.user_feed_content{
+    float: left;
+    /*margin-left: 150px;*/
+}
+.user_feed{
+    float: left;
+    margin-right: 16px;
+}
+.feed_header{
+    margin-top: 8px;
+    margin-left: 150px;
+    width: 150px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    height: 30px;
+}
+.feed_menu{
+    margin-top: 8px;
+    margin-left: 150px;
+    width: 150px;
+    margin-bottom: 8px;
+    color: black !important;
+    /*border-bottom: 1px solid #ddd;*/
+}
+.feed_menu a{
+    /*color: black;*/
+    color: #999;
+    text-decoration: none;
+}
+.user_feed_content_count{
+    margin-top: 8px;
+    /*margin-left: 150px;*/
+    height: 30px;
+    width: 600px;
+    border-bottom: 1px solid #ddd;
+    /*width: 150px;*/
+    margin-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+}
+

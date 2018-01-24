@@ -23,4 +23,9 @@ Rails.application.routes.draw do
   post 'new_comment' => 'comments#new_comment'
   get 'all_answers_of_a_user' => 'users#all_answers_of_a_user'
   post 'change_profile_picture' => 'users#change_profile_picture'
+  get 'all_questions_of_a_user' => 'users#all_questions_of_a_user'
+  get 'all_followers_of_a_user' => 'users#all_followers_of_a_user'
+  get 'all_following_of_a_user' => 'users#all_following_of_a_user'
+  get 'follow_a_user' => 'users#follow_a_user'
+  get 'unfollow_a_user' => 'users#unfollow_a_user'
 end

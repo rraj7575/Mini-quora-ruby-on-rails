@@ -1,4 +1,8 @@
 <div class="content-wraper">
+  <%= render 'shared_feed_menu_with_profile', user: @user %>
+  <div class="user_feed_content">
+  <div class="user_feed_content_count"> <%= @user.answers_count %> Answers</div>
+
   <% @all_answers_by_user_with_questions.each do |question_answer| %>
       <div class="question_answer">
         <div class="question"><%= link_to question_answer['question_name'], question_answers_path(question_answer['question_id']), :class => 'question_link' %></div>
@@ -37,13 +41,10 @@
               <%= render 'comments/load_comments', last_comment: answer.comments.last,user_of_last_comment: User.find_by_id(answer.comments.last.user_id), answer_id: answer.id %>
             </div>
         <% end %>
-
       </div>
   <% end %>
-
-
+  </div>
 </div>
-
 
 <script>
     $(document).on('click', '.submit-answer', function(){
@@ -128,6 +129,7 @@
         e.preventDefault()
         var answer_id = (this.id).substring('comment_id-'.length)
         var comment_box_and_comment_button = 'comment_box_and_comment_button-' + answer_id
+        $('#' + comment_box_and_comment_button).show()
         $('#' + comment_box_and_comment_button).show()
         var last_comment_id = 'comment_id-' + answer_id
         $('#' + last_comment_id).hide()

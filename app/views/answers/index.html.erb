@@ -31,6 +31,13 @@
             <span>|</span>
             <span class="downvote-<%=answer.id %>"><%= answer.downvote %></span>
           </span>
+          <% if current_user.id == answer.user_id %>
+              <script>
+                  var disable_btn = 'upvote-' + '<%= answer.id %>'
+                  $('#' + disable_btn).attr('disabled','disabled');
+              </script>
+          <% end %>
+
         </div>
         <div id="upvoted_count_position_fixed-<%= answer.id %>" style="display: none" class="upvoted_count_position_fixed" > <%= answer.upvate %>  Upvoters </div>
         <div id="upvoted_user_modal_wrapper-<%= answer.id %>" class="upvoted_user_modal_wrapper" style="display: none">

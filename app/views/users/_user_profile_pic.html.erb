@@ -1,5 +1,7 @@
-<% if @active_user.avatar? %>
-    <%= image_tag(@active_user.avatar_url) %>
-<% else %>
-    <%= image_tag('profile.png')  %>
-<% end %>
+<div>
+  <% if user.avatar? %>
+      <div > <%= image_tag(user.avatar_url) %></div>
+  <% else %>
+      <%= image_tag('profile.png')  %>
+  <% end %>
+</div>

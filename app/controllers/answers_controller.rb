@@ -70,11 +70,3 @@ class AnswersController < ApplicationController
 end
 
 
-
-
-
-
-
-
-
-
