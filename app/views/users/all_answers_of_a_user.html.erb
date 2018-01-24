@@ -4,7 +4,6 @@
   <div class="user_feed_content_count"> <%= @user.answers_count %> Answers</div>
 
   <% @all_answers_by_user_with_questions.each do |question_answer| %>
-
       <div class="question_answer">
         <div class="question"><%= link_to question_answer['question_name'], question_answers_path(question_answer['question_id']), :class => 'question_link' %></div>
           <div><%= render 'common/user_details', user: @user %></div>

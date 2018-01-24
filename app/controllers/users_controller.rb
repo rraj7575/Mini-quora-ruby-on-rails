@@ -26,7 +26,6 @@ class UsersController < ApplicationController
     @all_answers_by_user_with_questions = ActiveRecord::Base.connection.execute("SELECT questions.id as question_id, questions.name as question_name,
                                                   answers.content as answer_content, answers.upvate as upvote_count, answers.downvote as downvote_count, answers.id as answer_id,
                                                   answers.user_id as user_id_of_answer FROM questions INNER JOIN answers ON questions.id=answers.question_id WHERE answers.user_id=\'#{params[:id]}\'")
-    byebug
   end
 
   def change_profile_picture
