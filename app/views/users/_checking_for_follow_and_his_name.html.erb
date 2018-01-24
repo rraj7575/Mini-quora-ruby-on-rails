@@ -1,0 +1,85 @@
+<div class="follow_or_unfollow">
+  <div>
+    <%= user.name %>
+  </div>
+  <% if user.id == current_user.id %>
+    <span  class="ur_followers">
+      <span >Followers</span>
+      <span>|</span>
+      <span> <%= user.followers_count %></span>
+     </span>
+  <% elsif @r_u_following.nil? %>
+    <span id="follow-<%= user.id %>" class="follow_btn">
+      <span >Follow</span>
+      <span>|</span>
+      <span> <%= user.followers_count %></span>
+    </span>
+    <span id="unfollow-<%= user.id %>" class="following_btn" style="display: none">
+      <span id="show_following" >Following</span>
+      <span >|</span>
+      <span id="follower_count"> <%= user.followers_count %></span>
+    </span>
+
+  <% else %>
+    <span id="unfollow-<%= user.id %>" class="following_btn">
+      <span >Following</span>
+      <span >|</span>
+      <span> <%= user.followers_count %></span>
+    </span>
+    <span id="follow-<%= user.id %>" class="follow_btn" style="display: none">
+      <span id="show_follow" >Follow</span>
+      <span>|</span>
+      <span id="follower_count"> <%= user.followers_count %></span>
+    </span>
+  <% end %>
+</div>
+
+<script>
+
+  $('[id*="follow-"]').click(function(e){
+    e.preventDefault()
+    var follower_id = (this.id).substring('follow-'.length)
+    $.ajax({
+        url: '/follow_a_user',
+        type: 'get',
+        datatype: 'json',
+        data: {	"follower_id": follower_id},
+        success: function(response){
+            if (response['status'] === true){
+                var show_following_div = 'unfollow-' + follower_id
+                $('#' + show_following_div).show()
+                var show_follow_div = 'follow-' + follower_id
+                $('#' + show_follow_div).hide()
+                $('#follower_count').html(response['follower_count'])
+                $('#follower_count_in_feed').html('Followers' + ' ' + response['follower_count'])
+            }
+        }
+    }).error(function(){
+        alert("something went wrong")
+    })
+  })
+
+  $('[id*="unfollow-"]').click(function(e){
+      e.preventDefault()
+      var unfollowed_id = (this.id).substring('unfollow-'.length)
+      $.ajax({
+          url: '/unfollow_a_user',
+          type: 'get',
+          datatype: 'json',
+          data: {	"unfollowed_id": unfollowed_id},
+          success: function(response){
+              if (response['status'] === true){
+                  var show_following_div = 'unfollow-' + unfollowed_id
+                  $('#' + show_following_div).hide()
+                  var show_follow_div = 'follow-' + unfollowed_id
+                  $('#' + show_follow_div).show()
+                  $('#follower_count').html(response['follower_count'])
+                  $('#follower_count_in_feed').html('Followers' + ' ' + response['follower_count'])
+
+              }
+          }
+      }).error(function(){
+          alert("something went wrong")
+      })
+  })
+</script>

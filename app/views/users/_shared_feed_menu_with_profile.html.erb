@@ -1,0 +1,14 @@
+<div class="user_profile">
+  <div class="user_profile_pic"><%= render 'users/user_profile_pic' , user: user %></div>
+  <div class="follow_or_unfollow"><%= render 'checking_for_follow_and_his_name', user: @user %></div>
+</div>
+
+<div class="user_feed">
+  <div class="feed_header">Feed</div>
+  <div class="feed_menu">
+    <div><%= link_to ( 'Answers' + '  ' + user.answers_count.to_s) , all_answers_of_a_user_path(id: @user.id) %></div>
+    <div><%= link_to 'Questions' + ' ' + user.questions_count.to_s , all_questions_of_a_user_path(user_id: @user.id) %></div>
+    <div><%= link_to 'Followers' + ' ' + user.followers_count.to_s, all_followers_of_a_user_path(user_id: @user.id) , id: 'follower_count_in_feed' %></div>
+    <div><%= link_to 'Following' + ' ' + user.following_count.to_s, all_following_of_a_user_path(user_id: @user) %></div>
+  </div>
+</div>
