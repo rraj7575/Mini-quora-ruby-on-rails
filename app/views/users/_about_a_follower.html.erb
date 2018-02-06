@@ -1,0 +1,25 @@
+
+<% if user.id == current_user.id %>
+    <span  class="ur_followers">
+      <span >Followers</span>
+      <span>|</span>
+      <span> <%= user.followers_count %></span>
+     </span>
+<% elsif r_u_following.empty? %>
+    <span id="follow-<%= user.id %>" class="follow_btn">
+      <span id="follow_text_in_follower_menu-<%= user.id %>">Follow</span>
+      <span >|</span>
+      <span id="follower_count_if_u_follow_in_follower_menu-<%= user.id %>"> <%= user.followers_count %></span>
+    </span>
+
+<% else %>
+    <span id="unfollowed-<%= user.id %>" class="following_btn">
+      <span id="following_text_in_follower_menu-<%= user.id %>">Following</span>
+      <span >|</span>
+      <span id="follower_count_if_u_unfollow_in_follower_menu-<%= user.id %>"> <%= user.followers_count %></span>
+    </span>
+<% end %>
+
+
+
+

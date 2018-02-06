@@ -1,0 +1,161 @@
+<% if user.id == current_user.id %>
+    <span  class="ur_followers">
+      <span >Followers</span>
+      <span>|</span>
+      <span> <%= user.followers_count %></span>
+     </span>
+<% elsif @r_u_following.empty? %>
+    <span id="follow_in_feed-<%= user.id %>" class="follow_btn">
+      <span id="follow_text">Follow</span>
+      <span>|</span>
+      <span id="follower_count_if_u_followed_in_feed"> <%= user.followers_count %></span>
+    </span>
+
+<% else %>
+    <span id="i_am_unfollowing_u-<%= user.id %>" class="following_btn">
+      <span id="following_text">Following</span>
+      <span >|</span>
+      <span id="follower_count_if_u_unfollowed_in_feed"> <%= user.followers_count %></span>
+    </span>
+
+<% end %>
+
+<script>
+     $('[id*="i_am_unfollowing_u-"]').click(function(e){
+         e.preventDefault()
+         if(this.id.search('follow_in_feed-') >= 0){
+             var following_id = (this.id).substring('follow_in_feed-'.length)
+             $.ajax({
+                 url: '/follow_a_user',
+                 type: 'get',
+                 datatype: 'json',
+                 data: {	"following_id": following_id},
+                 success: function(response){
+                     if (response['status'] === true){
+
+                         var older_span_id = 'follow_in_feed-' + following_id
+                         var newer_span_id = 'i_am_unfollowing_u-' + following_id
+                         var newer_class = 'following_btn'
+                         $('#' + older_span_id).attr('id', newer_span_id);
+                         $('#' + newer_span_id).attr('class', newer_class);
+                         var older_follow_text = 'follow_text'
+                         var newer_following_text = 'following_text'
+                         $('#' + older_follow_text).attr('id',newer_following_text )
+                         $('#' + newer_following_text).html('Following')
+                         var older_follower_count_id = 'follower_count_if_u_followed_in_feed'
+                         var newer_follower_count_id = 'follower_count_if_u_unfollowed_in_feed'
+                         $('#' + older_follower_count_id).attr('id',newer_follower_count_id )
+                         $('#' + newer_follower_count_id).html(response['follower_count'])
+                         $('#follower_count_in_user_menu').html('Followers' + ' ' + response['follower_count'])
+
+                     }
+                 }
+             }).error(function(){
+                 alert("something went wrong")
+             })
+         }
+         else {
+
+             var unfollowed_id = (this.id).substring('i_am_unfollowing_u-'.length)
+             $.ajax({
+                 url: '/unfollow_a_user',
+                 type: 'get',
+                 datatype: 'json',
+                 data: {	"unfollowed_id": unfollowed_id},
+                 success: function(response){
+                     if (response['status'] === true){
+
+                         var older_span_id = 'i_am_unfollowing_u-' + unfollowed_id
+                         var newer_span_id = 'follow_in_feed-' + unfollowed_id
+                         var newer_class = 'follow_btn'
+                         $('#' + older_span_id).attr('id', newer_span_id);
+                         $('#' + newer_span_id).attr('class', newer_class);
+                         var older_follow_text = 'following_text'
+                         var newer_following_text = 'follow_text'
+                         $('#' + older_follow_text).attr('id',newer_following_text )
+                         $('#' + newer_following_text).html('Follow')
+                         var older_follower_count_id = 'follower_count_if_u_unfollowed_in_feed'
+                         var newer_follower_count_id = 'follower_count_if_u_followed_in_feed'
+                         $('#' + older_follower_count_id).attr('id',newer_follower_count_id )
+                         $('#' + newer_follower_count_id).html(response['follower_count'])
+                         // $('#follower_count_if_u_unfollow').html(response['follower_count'])
+                         $('#follower_count_in_user_menu').html('Followers' + ' ' + response['follower_count'])
+
+                     }
+                 }
+             }).error(function(){
+                 alert("something went wrong")
+             })
+
+         }
+
+     })
+
+     $('[id*="follow_in_feed-"]').click(function(e){
+         e.preventDefault()
+         if(this.id.search('follow_in_feed-') >= 0){
+             var following_id = (this.id).substring('follow_in_feed-'.length)
+             $.ajax({
+                 url: '/follow_a_user',
+                 type: 'get',
+                 datatype: 'json',
+                 data: {	"following_id": following_id},
+                 success: function(response){
+                     if (response['status'] === true){
+                         var older_span_id = 'follow_in_feed-' + following_id
+                         var newer_span_id = 'i_am_unfollowing_u-' + following_id
+                         var newer_class = 'following_btn'
+                         $('#' + older_span_id).attr('id', newer_span_id);
+                         $('#' + newer_span_id).attr('class', newer_class);
+                         var older_follow_text = 'follow_text'
+                         var newer_following_text = 'following_text'
+                         $('#' + older_follow_text).attr('id',newer_following_text )
+                         $('#' + newer_following_text).html('Following')
+                         var older_follower_count_id = 'follower_count_if_u_followed_in_feed'
+                         var newer_follower_count_id = 'follower_count_if_u_unfollowed_in_feed'
+                         $('#' + older_follower_count_id).attr('id',newer_follower_count_id )
+                         $('#' + newer_follower_count_id).html(response['follower_count'])
+                         $('#follower_count_in_user_menu').html('Followers' + ' ' + response['follower_count'])
+
+                     }
+                 }
+             }).error(function(){
+                 alert("something went wrong")
+             })
+         }
+         else {
+
+             var unfollowed_id = (this.id).substring('i_am_unfollowing_u-'.length)
+             $.ajax({
+                 url: '/unfollow_a_user',
+                 type: 'get',
+                 datatype: 'json',
+                 data: {	"unfollowed_id": unfollowed_id},
+                 success: function(response){
+                     if (response['status'] === true){
+                         var older_span_id = 'i_am_unfollowing_u-' + unfollowed_id
+                         var newer_span_id = 'follow_in_feed-' + unfollowed_id
+                         var newer_class = 'follow_btn'
+                         $('#' + older_span_id).attr('id', newer_span_id);
+                         $('#' + newer_span_id).attr('class', newer_class);
+                         var older_follow_text = 'following_text'
+                         var newer_following_text = 'follow_text'
+                         $('#' + older_follow_text).attr('id',newer_following_text )
+                         $('#' + newer_following_text).html('Follow')
+                         var older_follower_count_id = 'follower_count_if_u_unfollowed_in_feed'
+                         var newer_follower_count_id = 'follower_count_if_u_followed_in_feed'
+                         $('#' + older_follower_count_id).attr('id',newer_follower_count_id )
+                         $('#' + newer_follower_count_id).html(response['follower_count'])
+                         $('#follower_count_in_user_menu').html('Followers' + ' ' + response['follower_count'])
+
+                     }
+                 }
+             }).error(function(){
+                 alert("something went wrong")
+             })
+
+         }
+
+     })
+</script>
+
