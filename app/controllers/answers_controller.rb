@@ -17,6 +17,8 @@ class AnswersController < ApplicationController
     @question = Question.find_by(id: params[:question_id])
     @answer = @question.answers.create!(content: params[:answer][:content], user_id: current_user.id,
                                         question_id: params[:question_id])
+    current_user.answers_count += 1
+    current_user.save!
     redirect_to question_answers_path
   end
 
@@ -34,8 +36,11 @@ class AnswersController < ApplicationController
   def destroy
     begin
       answer = Answer.find_by_id(params['answer_id'])
+      byebug
       answer.comments.delete_all
+      answer.upvote_downvotes.delete_all
       answer.delete
+      current_user.answers_count -= 1
       render json: { status: true }
     rescue
       render json: { status: false}

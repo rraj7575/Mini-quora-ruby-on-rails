@@ -2,3 +2,23 @@
 <div class="user_feed_content">
   <div class="user_feed_content_count"> <%= @user.followers_count %> Followers</div>
 </div>
+
+<div class="all_follower">
+  <% @all_followers.each do |follower| %>
+      <div class="followers">
+        <div class="user_profile_pic_in_follower">
+          <%= render 'user_profile_pic_small', user: User.find_by_id(follower.following_id) %>
+          <%= link_to follower.follower_name , all_answers_of_a_user_path(id: follower.following_id) %>
+        </div>
+        <div class="user_profile_pic_in_follower_space">
+
+        </div>
+        <div class="user_profile_pic_in_follower">
+          <%= render 'about_a_follower', user: User.find_by_id(follower.following_id), r_u_following: User.find_by_id(follower.following_id).followers.where(following_id: current_user.id)%>
+        </div>
+      </div>
+  <% end %>
+</div>
+
+
+

@@ -12,7 +12,10 @@
 //
 //= require rails-ujs
 //= require turbolinks
+//= require follow_unfollow_a_user
 //= require_tree .
 //= require jquery
 //= require bootstrap-sprockets
+
+
 

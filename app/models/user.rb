@@ -7,8 +7,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   #mount_uploader :avatar, AvatarUploader
-  has_many :questions
-  has_many :answers
-  has_many :upvote_downvotes
-  has_many :comments
+  has_many :questions, :dependent => :destroy
+  has_many :answers, :dependent => :destroy
+  has_many :upvote_downvotes, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
+  has_many :followers, :dependent => :destroy
 end

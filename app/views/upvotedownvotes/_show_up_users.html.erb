@@ -1,4 +1,6 @@
 <% @upvoted_users.each do |user| %>
-    <%= link_to (user.name), all_answers_of_a_user_path(id: user.id) %>
-    </br>
+  <div class="user_profile_pic_in_upvote_a_answer">
+      <%= render 'users/user_profile_pic_small', user: user %>
+      <%= link_to user.name , all_answers_of_a_user_path(id: user.id) %>
+  </div><br>
 <% end %>

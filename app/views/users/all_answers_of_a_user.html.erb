@@ -9,7 +9,7 @@
           <div><%= render 'common/user_details', user: @user %></div>
           <div class="answer_content" style="margin-top: 40px" ><%= question_answer['answer_content'] %></div>
         <div class="upvote-count">
-          <span id="upvoted_users_of_ans-<%= question_answer['answer_id']%>" > <%= link_to ((question_answer['upvote_count']).to_s + ' ' + 'upvotes') %> </span>
+          <span id="upvoted_users_of_ans-<%= question_answer['answer_id']%>" > <%= link_to ('View' + ' ' + 'Upvoters') %> </span>
         </div>
         <div>
           <span id="upvote-<%= question_answer['answer_id'] %>" class="upvote-btn">
@@ -23,8 +23,7 @@
             <span class="downvote-<%= question_answer['answer_id'] %>"><%= question_answer['downvote_count'] %></span>
           </span>
         </div>
-
-        <div id="upvoted_count_position_fixed-<%= question_answer['answer_id'] %>" style="display: none" class="upvoted_count_position_fixed" > <%= question_answer['answer_id'] %>  Upvoters </div>
+        <div id="upvoted_count_position_fixed-<%= question_answer['answer_id'] %>" style="display: none" class="upvoted_count_position_fixed" > <%= question_answer['upvote_count'] %>  Upvoters </div>
         <div id="upvoted_user_modal_wrapper-<%= question_answer['answer_id'] %>" class="upvoted_user_modal_wrapper" style="display: none">
           <div id="upvoted_answer_users-<%= question_answer['answer_id']%>" class="answer_voter_list">
           </div>

@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
 
   def index
-    @all_questions = Question.all
+    @all_questions = Question.paginate(page: params[:page], per_page: 2).order('created_at DESC')
     @last_answer_of_all_questions = {}
     @user_of_last_answer = {}
     @all_questions.each do |question|
@@ -13,6 +13,7 @@ class QuestionsController < ApplicationController
         @user_of_last_answer[question.id] = last_user
       end
     end
+    format.json { render json: @all_questions }
   end
 
   def new
@@ -22,7 +23,9 @@ class QuestionsController < ApplicationController
   def create
     begin
       @question = current_user.questions.create!(question_params)
-    rescue
+      current_user.questions_count += 1
+      current_user.save!
+      rescue
       @question = Question.new
       render 'new'
     end
@@ -31,7 +34,6 @@ class QuestionsController < ApplicationController
 
   def edit
     @question = Question.find_by(id: params[:id])
-
   end
 
   def update

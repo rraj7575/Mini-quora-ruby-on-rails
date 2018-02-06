@@ -1,7 +1,25 @@
 body{
     padding-top: 100px;
-    /*background: ghostwhite;*/
 }
+.loading {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 )
+    url('http://sampsonresume.com/labs/pIkfp.gif')
+    50% 50%
+    no-repeat;
+}
+/*body.loading {*/
+    /*overflow: hidden;*/
+/*}*/
+/*body.loading .modal {*/
+    /*display: block;*/
+/*}*/
 /*.content-wraper{*/
     /*background: ghostwhite;*/
 /*}*/
@@ -21,7 +39,8 @@ body{
 
 .question_answer, .question_answer_edit_delete{
     width: 600px;
-    border: 1px solid #efefef;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
     background-color: #fff;
     border-radius: 4px;
     margin: 0 auto;
@@ -61,6 +80,13 @@ body{
 }
 .question_answer_edit_delete{
     margin: 0 auto;
+}
+.answer_text_area{
+    width: 600px;
+    margin-right: 100px;
+    margin-bottom: 10px;
+    height: 150px;
+    float: left;
 }
 
 .header-logo{
@@ -113,13 +139,9 @@ body{
 }
 .QuestionMain{
     width: 600px;
-    /*border-: 1px solid #efefef;*/
     background-color: #fff;
     border-radius: 4px;
     margin-left: 150px;
-    /*-webkit-transition: border-color .5s ease 180ms ease-in-out 0s;*/
-    /*-o-transition: border-color .5s ease 180ms ease-in-out 0s;*/
-    /*transition: border-color .5s ease 180ms ease-in-out 0s;*/
 }
 .upvote-count span a{
     height: 30px;
@@ -197,8 +219,6 @@ textarea:focus, input:focus{
 .comments{
     display: block;
     padding: 16px;
-    /*margin-top: 16px;*/
-    /*margin-left: 16px;*/
     margin-bottom: 16px;
     border-radius: 2px;
     background: #f7f7f7;
@@ -222,8 +242,6 @@ textarea:focus, input:focus{
 }
 .all_comments_of_a_answer, .wrap_comments{
     display: block;
-    /*padding: 16px;*/
-    /*margin-top: 16px;*/
     margin-bottom: -16px;
     border-radius: 2px;
     background: #f7f7f7;
@@ -257,7 +275,8 @@ textarea:focus, input:focus{
 }
 .update-comment{
     width: 566px;
-    height: 27px;
+    height: 30px;
+    margin-bottom: 8px;
 }
 .show_profile{
     width: 150px !important;
@@ -266,11 +285,6 @@ textarea:focus, input:focus{
     width: 744px;
 }
 .show_profile img{
-    /*position: absolute;*/
-    /*top: 20px;*/
-    /*left: 0;*/
-    /*width: 100px;*/
-    /*height: 100px;*/
     width: 150px !important;
     height: 150px !important;
     border-radius: 50%;
@@ -279,23 +293,13 @@ textarea:focus, input:focus{
     float: left;
 }
 
-input[type='file'] {
-    /*opacity:0*/
-    /*width: 0px;*/
-    /*height: 0px;*/
-}
 .edit_profile_photo {
-    /*position:absolute;*/
     position: relative;
     top: -30px;
     left: 40px;
-    /*z-index: 1;*/
     width: 70px;
     height: 40px;
     text-align: center !important;
-    /*color: transparent;*/
-    /*opacity: 0.5;*/
-    /*display: none;*/
     color: #730E15;
     text-align: center;
     font-size: 13px;
@@ -355,7 +359,6 @@ input[type='file'] {
 }
 .user_feed_content{
     float: left;
-    /*margin-left: 150px;*/
 }
 .user_feed{
     float: left;
@@ -388,8 +391,68 @@ input[type='file'] {
     height: 30px;
     width: 600px;
     border-bottom: 1px solid #ddd;
-    /*width: 150px;*/
-    margin-bottom: 16px;
     border-bottom: 1px solid #ddd;
 }
+.followers{
+    float: left;
+    /*margin-right: 16px;*/
+    height: 200px;
+    margin: 16px;
+    margin-bottom: 16px;
+    width: 268px;
+    border-bottom: 1px solid #ddd;
 
+}
+.all_follower, .all_following, .user_questions_in_menu{
+    float: left;
+    width: 600px;
+}
+.user_profile_pic_in_follower, .user_profile_pic_in_following{
+    float: left;
+    height: 50px;
+    width: 150px;
+}
+.user_profile_pic_in_upvote_a_answer{
+    height: 50px;
+    width: 200px;
+}
+.user_profile_pic_in_follower_space{
+    float: left;
+    height: 110px;
+    width: 268px;
+}
+.answer_of_a_question_count_in_menu a{
+    color: #999;
+    font-weight: bold;
+}
+.answer_of_a_question_count_in_menu{
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+
+.submit_answer_in_question_menu input{
+
+    margin: 0px 10px 10px 10px;
+    height: 30px;
+}
+.submit_answer_in_question_menu{
+    background: #f6f6f6;
+    width: 600px;
+    border: 1px solid #ddd;
+    margin-bottom: 16px;
+}
+.user_profile_in_question_menu{
+    background: #f6f6f6;
+    width: 600px;
+    border: 1px solid #ddd;
+}
+.question_answer_in_menu{
+    margin-top: 20px;
+    border-bottom: 1px solid #ddd;
+}
+.submit-answer {
+    margin-bottom: 16px;
+}
+.update-answer{
+    width: 250px;
+}
