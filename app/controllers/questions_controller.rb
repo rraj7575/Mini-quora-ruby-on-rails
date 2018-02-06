@@ -1,7 +1,8 @@
 class QuestionsController < ApplicationController
 
   def index
-    @all_questions = Question.paginate(page: params[:page], per_page: 2).order('created_at DESC')
+    # @all_questions = Question.paginate(page: params[:page], per_page: 2).order('created_at DESC')
+    @all_questions = Question.all
     @last_answer_of_all_questions = {}
     @user_of_last_answer = {}
     @all_questions.each do |question|
