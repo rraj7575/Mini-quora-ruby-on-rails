@@ -22,22 +22,17 @@
         <div class="dropdown profile show-inline-header">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">About Me<span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li> <%= link_to('Profile', edit_user_path(current_user)) %></li>
+            <li> <%= link_to('Profile', edit_user_path(current_user)) if current_user %></li>
             <li><a href="#">Blogs</a></li>
             <li><a href="">Messages</a></li>
             <li><a href="#">Settings</a></li>
             <li class="divider"></li>
-            <li> <%= link_to('Logout', destroy_user_session_path, method: :delete) %></li>
+            <li> <%= link_to('Logout', destroy_user_session_path, method: :delete) if current_user %></li>
           </ul>
         </div>
       </div>
     </nav>
-<% else %>
-  <script type="text/javascript">
-      window.location.href="/users/sign_in"
-  </script>
-<%end %>
-
-<%= yield %>
+ <% end %>
+  <%= yield %>
 </body>
 </html>
