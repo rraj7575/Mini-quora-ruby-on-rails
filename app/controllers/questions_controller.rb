@@ -13,7 +13,6 @@ class QuestionsController < ApplicationController
         @user_of_last_answer[question.id] = last_user
       end
     end
-    format.json { render json: @all_questions }
   end
 
   def new
