@@ -3,7 +3,7 @@
       <div> <%= render 'common/user_details' , user: User.find_by_id(comment.user_id) %></div>
       <div id="updated_comment-<%= comment.comment_id %>" style="margin-top: 40px; margin-left: 60px"><%= comment.commented_text %></div>
       <div>
-         <div id="edit_box_and_update_button-<%= comment.comment_id %>" class="edit_box_and_update_button_togather" style="display: none">
+         <div id="edit_box_and_update_button-<%= comment.comment_id %>" class="edit_box_and_update_button_togather" style=" display: none">
          <div> <input type="text" value="<%= comment.commented_text %>" id="editing_comment_field-<%= comment.comment_id %>"  class="update-comment"></div>
          <div> <input type="submit" value="update" id="update_comment_btn-<%= comment.comment_id %>" class="btn-primary" style="float: right"></div>
       </div>

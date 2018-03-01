@@ -2,3 +2,43 @@
 <div class="user_feed_content">
   <div class="user_feed_content_count"> <%= @user.questions_count %> Questions</div>
 </div>
+
+<div class="user_questions_in_menu">
+  <% @all_questions.each do |question| %>
+    <div class="question_answer_in_menu">
+      <div class="question">
+        <%= link_to question.name, question_answers_path(question) %><br>
+      </div>
+      <div class="answer_of_a_question_count_in_menu">
+        <%= link_to (question.answers.count.to_s + ' ' + 'Answers'), question_answers_path(question) %>
+        <%=' . ' + 'Asked ' + question.created_at.to_date.strftime('%b') + ' ' + question.created_at.to_date.strftime('%d') %>
+      </div>
+      <div>
+        <input type="submit" value="Answer" id="submit_answer-<%= question.id %>" class= "submit-answer btn-primary">
+        <div id="answer_a_question-<%= question.id %>", class= "answer_a_question" , style="display: none">
+        <div class="user_profile_in_question_menu" style="float: left; width: 600px">
+          <%= render 'users/user_profile_pic_small', user: current_user %>
+          <%= link_to current_user.name, all_answers_of_a_user_path(id: current_user.id) %>
+        </div>
+        <div style="float: left; width: 600px;">
+          <%= form_for Answer.new , url: question_answers_url(question) do |f| %>
+              <%= f.text_area :content , placeholder: 'Write your answer', class: 'answer_text_area' %></br>
+              <div class="submit_answer_in_question_menu" ><%= f.submit 'submit', :class => 'btn-primary ' %></div>
+          <% end %>
+        </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+    $('[id*="submit_answer-"]').click(function(e){
+        e.preventDefault()
+        var question_id = (this.id).substring('submit_answer-'.length)
+        var id_for_input_of_a_answer = 'submit_answer-' + question_id
+        var answer_a_question = 'answer_a_question-' + question_id
+        $('#' + id_for_input_of_a_answer).hide()
+        $('#' + answer_a_question).show()
+    })
+</script>

@@ -3,13 +3,13 @@
 <head>
   <title>MiniQuora</title>
   <%= csrf_meta_tags %>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_link_tag 'main' %>
 </head>
 <body>
-
-  <% if !current_user.nil? %>
+  <% if current_user %>
     <nav class="navbar navbar-light navbar-default SiteHeader">
       <div class="header-div">
         <div class="header-logo show-inline-header">
@@ -22,21 +22,17 @@
         <div class="dropdown profile show-inline-header">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">About Me<span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li> <%= link_to('Profile', edit_user_path(current_user)) %></li>
+            <li> <%= link_to('Profile', edit_user_path(current_user)) if current_user %></li>
             <li><a href="#">Blogs</a></li>
             <li><a href="">Messages</a></li>
             <li><a href="#">Settings</a></li>
             <li class="divider"></li>
-            <li> <%= link_to('Logout', destroy_user_session_path, method: :delete) %></li>
+            <li> <%= link_to('Logout', destroy_user_session_path, method: :delete) if current_user %></li>
           </ul>
         </div>
       </div>
     </nav>
-  <% else %>
-    <script type="text/javascript">
-        window.location.href="/users/sign_in"
-    </script>
-  <%end %>
+ <% end %>
   <%= yield %>
 </body>
 </html>

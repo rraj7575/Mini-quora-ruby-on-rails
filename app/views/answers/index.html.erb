@@ -8,7 +8,7 @@
     </div>
     <div class=" answer-a_question", style="display: none">
       <%= form_for Answer.new , url: question_answers_url(@question) do |f| %>
-          <%= f.text_area :content , placeholder: 'Write your answer....' %></br>
+          <%= f.text_area :content , placeholder: 'Write your answe' %></br>
           <p><%= f.submit 'submit', :class => 'btn-primary' %></p>
       <% end %>
     </div>
@@ -18,7 +18,9 @@
         <div> <%= render 'common/user_details' , user: @all_answered_users[answer.user_id]%></div>
         <div style="margin-top: 40px"><%= answer.content %></div>
         <div class="upvote-count">
-          <span id="upvoted_users_of_ans-<%= answer.id%>" > <%= link_to ((answer.upvate).to_s + ' ' + 'upvotes') %> </span>
+          <% if answer.upvate > 0 %>
+            <span id="upvoted_users_of_ans-<%= answer.id%>" > <%= link_to ('View' + ' ' + 'Upvoters') %> </span>
+          <% end %>
         </div>
         <div>
           <span id="upvote-<%=answer.id %>" class="upvote-btn">

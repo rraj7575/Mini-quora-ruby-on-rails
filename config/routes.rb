@@ -28,4 +28,5 @@ Rails.application.routes.draw do
   get 'all_following_of_a_user' => 'users#all_following_of_a_user'
   get 'follow_a_user' => 'users#follow_a_user'
   get 'unfollow_a_user' => 'users#unfollow_a_user'
+  get 'next_page_in_question' => 'questions#next_page'
 end
