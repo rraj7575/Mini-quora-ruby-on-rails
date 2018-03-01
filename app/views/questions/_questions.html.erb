@@ -1,0 +1,68 @@
+ <% @all_questions.each do |question| %>
+      <div id="onclick_hide-<%= question.id %>" class="question_answer">
+        <div id="hide_question-<%= question.id %>" style="float: right; cursor: pointer; color: #aaa; ">X</div>
+        <div class="question"><%= link_to question.name, question_answers_path(question), :class => 'question_link' %></div>
+        <% if !@last_answer_of_all_questions[question.id].nil? %>
+
+            <div id="removing_answer_after_deletion-<%= @last_answer_of_all_questions[question.id].id %>">
+              <%= render 'common/user_details', user: @user_of_last_answer[question.id] %><br>
+              <span id="updated_answer-<%= @last_answer_of_all_questions[question.id].id%>" ><%= render 'common/answer_details', answer: @last_answer_of_all_questions[question.id] %></span>
+            </div>
+
+            <div id="edit_box_and_update_button-<%= @last_answer_of_all_questions[question.id].id %>" class="edit_box_and_update_button_togather" style="display: none">
+              <div> <input type="text" value="<%= @last_answer_of_all_questions[question.id].content %>" id="editing_answer_field-<%= @last_answer_of_all_questions[question.id].id%>"  class="update-answer"></div>
+              <div> <input type="submit" value="update answer" id="update_answer_btn-<%= @last_answer_of_all_questions[question.id].id %>" class="btn-primary" style="float: right"></div>
+            </div>
+            <% if @user_of_last_answer[question.id].id  == current_user.id %>
+                <div id="three_dot_menu-<%= @last_answer_of_all_questions[question.id].id %>" class="three-dot-menu">
+                  <div class="dropup pull-left">
+                    <div data-toggle="dropdown">...</div>
+                    <ul class="dropdown-menu">
+                      <li id="edit_answer-<%= @last_answer_of_all_questions[question.id].id %>"> Edit </li>
+                      <li id="delete_answer-<%= @last_answer_of_all_questions[question.id].id %>"> Delete</li>
+                    </ul>
+                  </div>
+                </div>
+            <% end %>
+         <% else %>
+            <div style="margin-top: 16px">
+              <input type="submit" value="Answer" id="submit_answer-<%= question.id %>" class= "submit-answer btn-primary">
+              <div id="answer_a_question-<%= question.id %>", class= "answer_a_question" , style="display: none; margin-top: 16px; margin-left: -16px ">
+                <div class="user_profile_in_question_menu" style="float: left; width: 600px">
+                  <%= render 'users/user_profile_pic_small', user: current_user %>
+                  <%= link_to current_user.name, all_answers_of_a_user_path(id: current_user.id) %>
+                </div>
+                <div style="float: left; width: 600px;">
+                  <%= form_for Answer.new , url: question_answers_url(question) do |f| %>
+                      <%= f.text_area :content , placeholder: 'Write your answer', class: 'answer_text_area' %></br>
+                      <div class="submit_answer_in_question_menu" ><%= f.submit 'submit', :class => 'btn-primary ' %></div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+        <% end %>
+      </div>
+  <% end %>
+ <script>
+     $('[id*="submit_answer-"]').click(function(e){
+         e.preventDefault()
+         var question_id = (this.id).substring('submit_answer-'.length)
+         var id_for_input_of_a_answer = 'submit_answer-' + question_id
+         var answer_a_question = 'answer_a_question-' + question_id
+         $('#' + id_for_input_of_a_answer).hide()
+         $('#' + answer_a_question).show()
+     })
+
+     $('[id*="hide_question-"]').click(function(e){
+         e.preventDefault()
+         var question_id = (this.id).substring('hide_question-'.length)
+         var onclick_hide = 'onclick_hide-' + question_id
+         $('#' + onclick_hide).hide()
+//
+     })
+
+ </script>
+
+
+
+

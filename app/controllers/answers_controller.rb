@@ -27,23 +27,22 @@ class AnswersController < ApplicationController
       answer = Answer.find_by_id(params['answer_id'])
       answer.content = params['updating_answer_text']
       answer.save!
-      render json: {status: true}
+      render json: { status: true }
     rescue
-      render json: {status: false}
+      render json: { status: false }
     end
   end
 
   def destroy
     begin
       answer = Answer.find_by_id(params['answer_id'])
-      byebug
       answer.comments.delete_all
       answer.upvote_downvotes.delete_all
       answer.delete
       current_user.answers_count -= 1
       render json: { status: true }
     rescue
-      render json: { status: false}
+      render json: { status: false }
     end
   end
 
@@ -54,9 +53,9 @@ class AnswersController < ApplicationController
       upvote_count += 1
       @answer.update!(upvate: upvote_count, user_id: current_user.id)
       @answer.upvote_downvotes.create(user_id: current_user.id, vote_type: 'upvote')
-      render json: {status: 1}
+      render json: { status: 1 }
     rescue
-      render json: {status: 0}
+      render json: { status: 0 }
     end
   end
 
@@ -67,9 +66,9 @@ class AnswersController < ApplicationController
       downvote_count += 1
       @answer.update!(downvote: downvote_count, user_id: current_user.id)
       @answer.upvote_downvotes.create(user_id: current_user.id, vote_type: 'dounvote', answer_id: @answer)
-      render json: {status: 1}
+      render json: { status: 1 }
     rescue
-      render json: {status: 0}
+      render json: { status: 0 }
     end
   end
 end

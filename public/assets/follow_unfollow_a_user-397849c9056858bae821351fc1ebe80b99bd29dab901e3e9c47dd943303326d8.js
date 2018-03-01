@@ -1,7 +1,4 @@
-
 $(window).load( function () {
-
-
 // $('[id*="follow-"]').click(function(e){
 //     e.preventDefault()
 //     var following_id = (this.id).substring('follow-'.length)
@@ -451,3 +448,4 @@ $(window).load( function () {
 
 
 })
+;

@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
   def index
-    # @all_questions = Question.paginate(page: params[:page], per_page: 2).order('created_at DESC')
-    @all_questions = Question.all
+    @all_questions = Question.paginate(page: params[:page], per_page: 6)
+    @page_no = 1
     @last_answer_of_all_questions = {}
     @user_of_last_answer = {}
     @all_questions.each do |question|
@@ -13,6 +13,29 @@ class QuestionsController < ApplicationController
         @user_of_last_answer[question.id] = last_user
       end
     end
+    # render json: { status: true, next_page: render_to_string('/questions/_questions',layout: false)}
+    # respond_to :html, :js
+  end
+
+  def next_page
+    @all_questions = Question.paginate(page: params[:page], per_page: 6)
+    @last_answer_of_all_questions = {}
+    @user_of_last_answer = {}
+    @all_questions.each do |question|
+      all_answers_for_current_question = question.answers
+      unless all_answers_for_current_question.empty?
+        last_answer = all_answers_for_current_question.last
+        @last_answer_of_all_questions[question.id] = last_answer
+        last_user = User.find_by_id(last_answer.user_id)
+        @user_of_last_answer[question.id] = last_user
+      end
+    end
+    if @all_questions.empty?
+      render json: { status: false }
+    else
+      render json: { status: true, next_page: render_to_string('/questions/_questions', local: {all_questions: @all_questions,
+                    last_answer_of_all_questions: @last_answer_of_all_questions, user_of_last_answer: @user_of_last_answer }, layout: false)}
+     end
   end
 
   def new
